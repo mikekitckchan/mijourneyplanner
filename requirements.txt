@@ -1,4 +1,4 @@
-python-3.6.5
+python-3.6.8
 Click==7.0
 Flask==1.0.2
 gunicorn==19.9.0
