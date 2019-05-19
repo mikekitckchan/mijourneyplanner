@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!--fullcalendar CDN -->
+    <link href ='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.0.0-alpha.4/fullcalendar.css' rel = 'stylesheet'>
+    <script src = 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.0.0-alpha.4/fullcalendar.js'></script>
+    <!--fullcalendar-->
+    <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet' />
+    <link href='static/fullcalendar/packages/core/main.css' rel='stylesheet' />
+    <link href='static/fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
+    <link href='static/fullcalendar/packages/timegrid/main.css' rel='stylesheet' />
+    <link href='static/fullcalendar/packages/bootstrap/main.css' rel='stylesheet' />
+    <script src='static/fullcalendar/packages/core/main.js'></script>
+    <script src='static/fullcalendar/packages/daygrid/main.js'></script>
+    <script src='static/fullcalendar/packages/bootstrap/main.js'></script>
+    <script src='static/fullcalendar/packages/timegrid/main.js'></script>
+    <!--for selectable-->
+    <script src='static/fullcalendar/packages/interaction/main.js'></script>
+
+
+
+
+    <title>mijourneyplanner</title>
+    <script>
+       document.addEventListener('DOMContentLoaded', function() {
+            var startdate = '{{startdate|safe}}';
+            var enddate = '{{enddate|safe}}';
+            var message = 'rendering days from '+startdate+' to '+enddate;
+            alert(message);
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'timeGrid', 'bootstrap', 'interaction' ],
+            themeSystem: 'bootstrap',
+            defaultView: 'timeGrid',
+            timeZone: 'UTC',
+            editable: true,
+            visibleRange: {
+                start: startdate,
+                end: enddate
+            },
+            header: {
+                center: 'addEventButton',
+                right: 'exportButton'
+            },
+            customButtons: {
+                exportButton:{
+                    text: 'export to link',
+                    click: function(){
+                        var events = calendar.getEvents();
+                        for (var i in events){
+                            var titlestr = i.title;
+                            console.log(titlestr.toISOString());
+                        }
+                        
+                    }
+                    
+                },
+                addEventButton: {
+                text: 'add event...',
+                click: function() {
+                    var eventnameStr = prompt('Enter your event name')
+                    var startdateStr = prompt('Enter start date in YYYY-MM-DD');
+                    var starttimeStr = prompt('Enter start time in HH:MM:SS');
+                    var enddateStr = prompt('Enter end date in YYYY-MM-DD');
+                    var endtimeStr = prompt('Enter end time in HH:MM:SS');
+                    var startdate = new Date(startdateStr + 'T'+starttimeStr); 
+                    var enddate = new Date(enddateStr + 'T'+endtimeStr);
+                    if (!isNaN(startdate.valueOf())) { // valid?
+                        calendar.addEvent({
+                        title: eventnameStr,
+                        start: startdate,
+                        end: enddate
+                        
+                    });
+                    alert('Great. Now, update your database...');
+                    
+
+                    } else {
+                        alert('Invalid date.');
+                    }
+            }
+        }
+    }});
+        calendar.render();
+        
+ 
+     });
+    
+
+    </script>
+  </head>
+
+  <body>
+    <div class = 'container col-md-12'>
+        <div id='calendar' class='col-md-12'></div>
+    </div>
+    <button class="btn btn-primary center-block">Export</button>
+</body>
+
+<style>
+.container{
+    postion: absolute;
+
+}
+</style>
+

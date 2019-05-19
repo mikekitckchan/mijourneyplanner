@@ -16,26 +16,26 @@
     
     <div class = "container col-md-8">
       <div class = "row col-md-12">
-        <p> This web app will allow you to plan your journey easily. Also you can share your planned journey to your friends! To start, simply put in your journey start date and end date below. Enjoy! </p></br></br>
+        <p> This web app allows you to plan your journey easily. Also you can share your planned journey to your friends! To start, simply put in your journey start date and end date below. Enjoy! </p></br></br>
       </div>
       <div class = "row">
         <div class = "col-md-8">
-        <form>
+        <form action = "{{ url_for('index') }}" method = "post">
           <div class = "form-row">
             <label for "startdate" class = "text-info col-md-4 col-form-label"> Journey Start Date: </label>
-            <input class = "form-control col-md-8" id = "startdate"  onfocus="(this.type='date')" type="text" placeholder="YYYY-MM-DD"/>
+            <input class = "form-control col-md-8" name = "startdate" id = "startdate"  onfocus="(this.type='date')" type="text" placeholder="YYYY-MM-DD"/>
           </div>
           </br>
           <div class = "form-row">
             <label for "enddate" class = "text-info col-md-4 col-form-label"> Journey End Date: </label>
-            <input class = "form-control col-md-8" id = "enddate"  onfocus="(this.type='date')"  type="text" placeholder="YYYY-MM-DD"/>
+            <input class = "form-control col-md-8" name = "enddate" id = "enddate"  onfocus="(this.type='date')"  type="text" placeholder="YYYY-MM-DD"/>
           </div>
           </br>
           <div class = "form-row">
             <div class = "col-md-4">
             </div>
             <div class = "col-md-4">
-            <button type="button" class="btn btn-primary center-block">Plan your journey now!</button>
+            <input type="submit" class="btn btn-primary center-block" value= "Plan your journey now!">
             </div>
             <div class = "col-md-4">
             </div>

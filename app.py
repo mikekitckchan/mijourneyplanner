@@ -1,11 +1,25 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, session, redirect, url_for
 
 app = Flask(__name__)
-   
-# a simple page that says hello
-@app.route('/')
+app.config['SECRET_KEY'] = 'hello world!'
+
+@app.route('/', methods = ['GET', 'POST'])
 def index():
-    return render_template("index.html")
+	if request.method == 'GET':
+		return render_template("index.html")
+	else:
+		startdate = request.form['startdate']
+		enddate = request.form['enddate']
+		return redirect(url_for('create', startdate=startdate, enddate=enddate))
+
+
+@app.route('/create')
+def create():
+	startdate=request.args.get("startdate")
+	enddate=request.args.get("enddate")
+	print(startdate)
+	print(enddate)
+	return render_template("create.html", startdate=startdate, enddate=enddate)
 
 if __name__ == '__main__':
     app.run()
