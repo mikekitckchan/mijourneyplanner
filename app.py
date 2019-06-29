@@ -13,13 +13,19 @@ def index():
 		return redirect(url_for('create', startdate=startdate, enddate=enddate))
 
 
-@app.route('/create')
+@app.route('/create', methods = ['GET', 'POST'])
 def create():
-	startdate=request.args.get("startdate")
-	enddate=request.args.get("enddate")
-	print(startdate)
-	print(enddate)
-	return render_template("create.html", startdate=startdate, enddate=enddate)
+	if request.method == 'GET':
+		startdate=request.args.get("startdate")
+		enddate=request.args.get("enddate")
+		print(startdate)
+		print(enddate)
+		return render_template("create.html", startdate=startdate, enddate=enddate)
+	else:
+		data = request.get_json()
+		print(data)
+		return redirect(url_for('index'))
+	
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

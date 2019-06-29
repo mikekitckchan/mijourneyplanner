@@ -25,6 +25,9 @@
     <!--for selectable-->
     <script src='static/fullcalendar/packages/interaction/main.js'></script>
 
+    <!--for AJAX -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 
 
 
@@ -55,10 +58,23 @@
                     text: 'export to link',
                     click: function(){
                         var events = calendar.getEvents();
-                        for (var i in events){
-                            var titlestr = i.title;
-                            console.log(titlestr.toISOString());
-                        }
+                        seen = [];
+                        $.ajax({
+                            url: '/create',
+                            data: JSON.stringify(events, function(key, val) {
+                                if (val != null && typeof val == "object") {
+                                    if (seen.indexOf(val) >= 0) {
+                                        return;
+                                    }
+                                    seen.push(val);
+                                }
+                                return val;})
+                            ,
+                            type: "POST",
+                            success: function (json) {
+                            alert('Added Successfully');
+                }
+            });
                         
                     }
                     
@@ -102,7 +118,6 @@
     <div class = 'container col-md-12'>
         <div id='calendar' class='col-md-12'></div>
     </div>
-    <button class="btn btn-primary center-block">Export</button>
 </body>
 
 <style>
