@@ -7,7 +7,7 @@ app.config['SECRET_KEY'] = 'hello world!'
 '''Adding configuration for database'''
 SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{hostname}/{databasename}".format(
     username="root",
-    password="Fong1029$",
+    password="",
     hostname="127.0.0.1:3306",
     databasename="mijourneyevent",
 )
