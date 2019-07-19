@@ -1,30 +1,56 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, jsonify
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hello world!'
 
-@app.route('/', methods = ['GET', 'POST'])
-def index():
-	if request.method == 'GET':
-		return render_template("index.html")
-	else:
-		startdate = request.form['startdate']
-		enddate = request.form['enddate']
-		return redirect(url_for('create', startdate=startdate, enddate=enddate))
+'''Adding configuration for database'''
+SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{hostname}/{databasename}".format(
+    username="root",
+    password="Fong1029$",
+    hostname="127.0.0.1:3306",
+    databasename="mijourneyevent",
+)
+app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
 
 
-@app.route('/create', methods = ['GET', 'POST'])
-def create():
-	if request.method == 'GET':
-		startdate=request.args.get("startdate")
-		enddate=request.args.get("enddate")
-		print(startdate)
-		print(enddate)
-		return render_template("create.html", startdate=startdate, enddate=enddate)
-	else:
+class Event(db.Model):
+	__tablename__ = "events"
+	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	title = db.Column(db.String(80))
+	start = db.Column(db.String(80))
+	end = db.Column(db.String(80))
+	
+	def __init__(self, title, start, end):
+		self.title = title
+		self.start = start
+		self.end = end
+
+	@property
+	def serialize(self):
+		"""Return object data in easily serializable format"""
+		return {
+			'id': self.id,
+			'title': self.title,
+			'start': str(self.start),
+			'end': str(self.end)
+       }
+
+@app.route('/createevent', methods = ['POST', 'GET'])
+def createevent():
+	if request.method == 'POST':
 		data = request.get_json()
-		print(data)
-		return redirect(url_for('index'))
+		event = Event(title=data["title"], start = data["start"], end = data["end"])
+		db.session.add(event)
+		db.session.commit()
+		return redirect(url_for('createevent'))
+	else:
+		qryresult = Event.query.all()
+		return jsonify([i.serialize for i in qryresult])
+		
 	
 
 if __name__ == '__main__':

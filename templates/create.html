@@ -57,19 +57,38 @@
                 exportButton:{
                     text: 'export to link',
                     click: function(){
+                        const eventsreplacer = () => {
+                            const seen = new WeakSet();
+                            return (key, value) => {
+                                if (typeof value === "object" && value !== null) {
+                                    if (seen.has(value)) {
+                                        return;
+                                    }
+                                    seen.add(value);
+                                }
+                                return value;
+                            };
+                        };
+                        
                         var events = calendar.getEvents();
+                        eventsJSON = JSON.stringify(events, eventsreplacer());
+                        console.dir(events);
+                        /*var events = event.getResources();*/
                         seen = [];
                         $.ajax({
                             url: '/create',
-                            data: JSON.stringify(events, function(key, val) {
+                            contentType : 'application/json; charset=utf-8', 
+                            data: eventsJSON,
+                            /*data: JSON.stringify(events, function(key, val) {
                                 if (val != null && typeof val == "object") {
                                     if (seen.indexOf(val) >= 0) {
                                         return;
                                     }
+                                    alert(val);
                                     seen.push(val);
                                 }
-                                return val;})
-                            ,
+                                return val;}),*/
+                            
                             type: "POST",
                             success: function (json) {
                             alert('Added Successfully');
