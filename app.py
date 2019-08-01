@@ -12,13 +12,14 @@ def index():
 	if request.method == 'GET':
 		return render_template("index.html")
 	else:
+		email = request.form['email']
 		startdate = request.form['startdate']
 		enddate = request.form['enddate']
 		return redirect(url_for('create', startdate=startdate, enddate=enddate))
 
 
-@app.route('/create', methods = ['GET', 'POST'])
-def create():
+@app.route('/create/<int:routeid>', methods = ['GET', 'POST'])
+def create(routeid):
 	if request.method == 'GET':
 		startdate=request.args.get("startdate")
 		enddate=request.args.get("enddate")
@@ -31,13 +32,8 @@ def create():
 			title = items['title']
 			start = items['start']
 			end = items['end']
-			r = requests.post("http://127.0.0.1:5001/createevent", json={"title": title, "start": start, "end": end})
+			r = requests.post("http://127.0.0.1:5001/eventmanagement", json={"title": title, "start": start, "end": end})
 		return redirect(url_for('index'))
-
-
-		
-	
-	
 
 if __name__ == '__main__':
     app.run(debug=True)

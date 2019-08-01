@@ -3,11 +3,7 @@ import json
 def getevent(data):
 
 	temp = data[0]['_calendar']['interactionsStore']['6'][0]['component']['context']['view']['timeGrid']['eventRenderer']['segs']
-	#print (temp)
-
-	output=[]
-	
-	
+	output=[]	
 	for items in temp:
 		eventdict ={}
 		eventdict['title']=items['eventRange']['def']['title']
@@ -15,7 +11,6 @@ def getevent(data):
 		eventdict['end']=items['end']
 		output.append(eventdict)
 		
-
 	return output
 			
 def makeevent(date, time):

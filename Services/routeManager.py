@@ -16,42 +16,41 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-
-class Event(db.Model):
-	__tablename__ = "events"
+class Route(db.Model):
+	__tablename__ = "routes"
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	title = db.Column(db.String(80))
-	start = db.Column(db.String(80))
-	end = db.Column(db.String(80))
+	email = db.Column(db.String(80))
+	create_route = db.Column(db.String(80))
+	view_route = db.Column(db.String(80))
 	
-	def __init__(self, title, start, end):
-		self.title = title
-		self.start = start
-		self.end = end
+	def __init__(self, email, create_route, view_route):
+		self.email = email
+		self.create_route = create_route
+		self.view_route = view_route
 
 	@property
 	def serialize(self):
 		"""Return object data in easily serializable format"""
 		return {
 			'id': self.id,
-			'title': self.title,
-			'start': str(self.start),
-			'end': str(self.end)
+			'email': self.email,
+			'create_route': str(self.create_route),
+			'view_route': str(self.view_route)
        }
 
-@app.route('/eventmanagement', methods = ['POST', 'GET'])
+@app.route('/routemanagement', methods = ['POST', 'GET'])
 def createevent():
 	if request.method == 'POST':
 		data = request.get_json()
-		event = Event(title=data["title"], start = data["start"], end = data["end"])
-		db.session.add(event)
+		route = Route(email=data["email"], create_route = data["create_route"], view_route = data["view_route"])
+		db.session.add(route)
 		db.session.commit()
-		return redirect(url_for('eventmanagement'))
+		return redirect(url_for('routemanagement'))
 	else:
-		qryresult = Event.query.all()
+		qryresult = Route.query.all()
 		return jsonify([i.serialize for i in qryresult])
 		
 	
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5002)

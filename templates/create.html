@@ -14,16 +14,16 @@
     <!--fullcalendar-->
     <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
     <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet' />
-    <link href='static/fullcalendar/packages/core/main.css' rel='stylesheet' />
-    <link href='static/fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
-    <link href='static/fullcalendar/packages/timegrid/main.css' rel='stylesheet' />
-    <link href='static/fullcalendar/packages/bootstrap/main.css' rel='stylesheet' />
-    <script src='static/fullcalendar/packages/core/main.js'></script>
-    <script src='static/fullcalendar/packages/daygrid/main.js'></script>
-    <script src='static/fullcalendar/packages/bootstrap/main.js'></script>
-    <script src='static/fullcalendar/packages/timegrid/main.js'></script>
+    <link href="{{ url_for('static',filename='fullcalendar/packages/core/main.css') }}" rel='stylesheet' />
+    <link href="{{ url_for('static',filename='fullcalendar/packages/daygrid/main.css') }}" rel='stylesheet' />
+    <link href="{{ url_for('static',filename='fullcalendar/packages/timegrid/main.css') }}"  rel='stylesheet' />
+    <link href="{{ url_for('static',filename='fullcalendar/packages/bootstrap/main.css') }}"  rel='stylesheet' />
+    <script src="{{ url_for('static',filename='fullcalendar/packages/core/main.js')}}"></script>
+    <script src="{{ url_for('static',filename='fullcalendar/packages/daygrid/main.js')}}"></script>
+    <script src="{{ url_for('static',filename='fullcalendar/packages/bootstrap/main.js')}}"></script>
+    <script src="{{ url_for('static',filename='fullcalendar/packages/timegrid/main.js')}}"></script>
     <!--for selectable-->
-    <script src='static/fullcalendar/packages/interaction/main.js'></script>
+    <script src="{{ url_for('static',filename='fullcalendar/packages/interaction/main.js')}}"></script>
 
     <!--for AJAX -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -79,16 +79,6 @@
                             url: '/create',
                             contentType : 'application/json; charset=utf-8', 
                             data: eventsJSON,
-                            /*data: JSON.stringify(events, function(key, val) {
-                                if (val != null && typeof val == "object") {
-                                    if (seen.indexOf(val) >= 0) {
-                                        return;
-                                    }
-                                    alert(val);
-                                    seen.push(val);
-                                }
-                                return val;}),*/
-                            
                             type: "POST",
                             success: function (json) {
                             alert('Added Successfully');

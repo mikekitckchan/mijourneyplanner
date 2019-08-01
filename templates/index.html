@@ -22,6 +22,10 @@
         <div class = "col-md-8">
         <form action = "{{ url_for('index') }}" method = "post">
           <div class = "form-row">
+            <label for "startdate" class = "text-info col-md-4 col-form-label"> Your e-mail address: </label>
+            <input class = "form-control col-md-8" name = "startdate" id = "email" type="email" placeholder="email@email.com"/>
+          </div>
+          <div class = "form-row">
             <label for "startdate" class = "text-info col-md-4 col-form-label"> Journey Start Date: </label>
             <input class = "form-control col-md-8" name = "startdate" id = "startdate"  onfocus="(this.type='date')" type="text" placeholder="YYYY-MM-DD"/>
           </div>
